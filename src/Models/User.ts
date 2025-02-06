@@ -1,5 +1,10 @@
-export interface User {
+// 'users' table.
+export interface IUser {
     id: number;
+    token: string;
+    phone: number;
     name: string;
-    email: string;
-}
+    lastname: string;
+    dob: Date;
+  }
+  

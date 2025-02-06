@@ -1,19 +1,21 @@
-import { Pool } from 'pg';
+import express from 'express';
 import dotenv from 'dotenv';
+
+import userRoutes from './Routes/userRoutes';
+import addRoutes from './Routes/addRoutes';
+import chatRoutes from './Routes/chatRoutes';
 
 dotenv.config();
 
-const pool = new Pool({
-  user: process.env.PGUSER || 'postgres',
-  host: process.env.PGHOST || 'localhost',
-  database: process.env.PGDATABASE || 'app',
-  password: process.env.PGPASSWORD || '123456',
-  port: Number(process.env.PGPORT) || 5432,
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+app.use('/api/users', userRoutes);
+app.use('/api/adds', addRoutes);
+app.use('/api/chats', chatRoutes);
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
-
-pool.connect()
-  .then(() => console.log('Connected to PostgreSQL...'))
-  .catch(err => console.error('Connection error', err.stack));
-
-
-export default pool;
