@@ -5,42 +5,38 @@ import {
   createUser,
   updateUser,
   deleteUser
-} from '../Controllers/userController';
+} from '../controllers/userController';
+
 
 const router = Router();
 
 /**
  * @route   GET /api/users
  * @desc    Retrieve all users
- * @access  Public
  */
 router.get('/', getUsers);
 
 /**
  * @route   GET /api/users/:id
- * @desc    Retrieve a single user by ID
- * @access  Public
+ * @desc    Retrieve a user by ID
  */
 router.get('/:id', getUserById);
 
 /**
  * @route   POST /api/users
  * @desc    Create a new user
- * @access  Public
  */
 router.post('/', createUser);
 
 /**
  * @route   PUT /api/users/:id
- * @desc    Update a user by ID
- * @access  Public
+ * @desc    Update an existing user
  */
 router.put('/:id', updateUser);
 
 /**
  * @route   DELETE /api/users/:id
  * @desc    Delete a user by ID
- * @access  Public
  */
 router.delete('/:id', deleteUser);
 

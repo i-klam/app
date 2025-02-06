@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import pool from '../Config/db';
+import pool from '../config/db';
 
 /* 
    Chat endpoints 
@@ -113,3 +113,4 @@ export const sendMessage = async (req: Request, res: Response): Promise<void> =>
     res.status(500).json({ error: 'Server error' });
   }
 };
+

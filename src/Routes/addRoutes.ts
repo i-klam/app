@@ -5,42 +5,37 @@ import {
   createAdd,
   updateAdd,
   deleteAdd
-} from '../Controllers/addController';
+} from '../controllers/addController';
 
 const router = Router();
 
 /**
  * @route   GET /api/adds
- * @desc    Retrieve all ads
- * @access  Public
+ * @desc    Retrieve all advertisements
  */
 router.get('/', getAdds);
 
 /**
  * @route   GET /api/adds/:id
- * @desc    Retrieve a single ad by ID
- * @access  Public
+ * @desc    Retrieve an advertisement by ID
  */
 router.get('/:id', getAddById);
 
 /**
  * @route   POST /api/adds
- * @desc    Create a new ad
- * @access  Public
+ * @desc    Create a new advertisement
  */
 router.post('/', createAdd);
 
 /**
  * @route   PUT /api/adds/:id
- * @desc    Update an ad by ID
- * @access  Public
+ * @desc    Update an advertisement by ID
  */
 router.put('/:id', updateAdd);
 
 /**
  * @route   DELETE /api/adds/:id
- * @desc    Delete an ad by ID
- * @access  Public
+ * @desc    Delete an advertisement by ID
  */
 router.delete('/:id', deleteAdd);
 

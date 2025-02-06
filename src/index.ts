@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 
-import userRoutes from './Routes/userRoutes';
-import addRoutes from './Routes/addRoutes';
-import chatRoutes from './Routes/chatRoutes';
+import userRoutes from './routes/userRoutes';
+import addRoutes from './routes/addRoutes';
+import chatRoutes from './routes/chatRoutes';
 
 dotenv.config();
 

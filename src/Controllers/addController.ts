@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import pool from '../Config/db';
+import pool from '../config/db';
 
 /**
  * GET /api/adds

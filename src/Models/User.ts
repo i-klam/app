@@ -1,4 +1,3 @@
-// 'users' table.
 export interface IUser {
     id: number;
     token: string;

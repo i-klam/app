@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import pool from '../Config/db';
+import pool from '../config/db';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * GET /api/users
@@ -39,7 +40,9 @@ export const getUserById = async (req: Request, res: Response): Promise<void> =>
  * Creates a new user.
  */
 export const createUser = async (req: Request, res: Response): Promise<void> => {
-  const { token, phone, name, lastname, dob } = req.body;
+  const { phone, name, lastname, dob } = req.body;
+  const token = uuidv4();
+
   try {
     const result = await pool.query(
       'INSERT INTO users (token, phone, name, lastname, dob) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -90,6 +93,25 @@ export const deleteUser = async (req: Request, res: Response): Promise<void> => 
     }
   } catch (error) {
     console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+/**
+ * GET /api/users/:token
+ * Retrieves a single user by token.
+ */
+export const getUserByToken = async (req: Request, res: Response): Promise<void> => {
+  const { token } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE token = $1', [token]);
+    if (result.rows.length === 0) {
+      res.status(404).json({ error: 'User not found' });
+    } else {
+      res.json(result.rows[0]);
+    }
+  } catch (error) {
+    console.error('Error fetching user:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };

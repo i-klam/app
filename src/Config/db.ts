@@ -8,7 +8,7 @@ const pool = new Pool({
   host: process.env.PGHOST || 'localhost',
   database: process.env.PGDATABASE || 'app',
   password: process.env.PGPASSWORD || '123456',
-  port: Number(process.env.PGPORT) || 5432
+  port: Number(process.env.PGPORT) || 5432,
 });
 
 pool.connect()
