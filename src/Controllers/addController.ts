@@ -1,118 +1,70 @@
 import { Request, Response } from 'express';
-import pool from '../config/db';
+import * as addService from '../services/addService';
 
 /**
- * GET /api/adds
- * Retrieves all ads.
+ * @route GET /api/adds
+ * @desc Retrieve all ads
  */
 export const getAdds = async (req: Request, res: Response): Promise<void> => {
   try {
-    const result = await pool.query('SELECT * FROM adds');
-    res.json(result.rows);
+    const adds = await addService.getAdds();
+    res.json(adds);
   } catch (error) {
-    console.error('Error fetching adds:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
 /**
- * GET /api/adds/:id
- * Retrieves a single ad by ID.
+ * @route GET /api/adds/:id
+ * @desc Retrieve an ad by ID
  */
 export const getAddById = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
   try {
-    const result = await pool.query('SELECT * FROM adds WHERE add_id = $1', [id]);
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Add not found' });
-    } else {
-      res.json(result.rows[0]);
-    }
+    const ad = await addService.getAddById(Number(req.params.id));
+    if (!ad) res.status(404).json({ error: 'Ad not found' });
+    else res.json(ad);
   } catch (error) {
-    console.error('Error fetching add:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
 /**
- * POST /api/adds
- * Creates a new ad.
+ * @route POST /api/adds
+ * @desc Create a new ad
  */
 export const createAdd = async (req: Request, res: Response): Promise<void> => {
-  const {
-    add_name,
-    add_disc,
-    add_cat,
-    add_img,
-    add_owner,
-    add_prise,
-    add_location,
-    add_count
-  } = req.body;
   try {
-    const result = await pool.query(
-      `INSERT INTO adds (
-          add_name, add_disc, add_cat, add_img, add_owner, add_prise, add_location, add_count
-       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-      [add_name, add_disc, add_cat, add_img, add_owner, add_prise, add_location, add_count]
-    );
-    res.status(201).json(result.rows[0]);
+    const newAdd = await addService.createAdd(req.body);
+    res.status(201).json(newAdd);
   } catch (error) {
-    console.error('Error creating add:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
 /**
- * PUT /api/adds/:id
- * Updates an ad by ID.
+ * @route PUT /api/adds/:id
+ * @desc Update an ad by ID
  */
 export const updateAdd = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
-  const {
-    add_name,
-    add_disc,
-    add_cat,
-    add_img,
-    add_owner,
-    add_prise,
-    add_location,
-    add_count
-  } = req.body;
   try {
-    const result = await pool.query(
-      `UPDATE adds SET 
-          add_name = $1, add_disc = $2, add_cat = $3, add_img = $4,
-          add_owner = $5, add_prise = $6, add_location = $7, add_count = $8
-       WHERE add_id = $9 RETURNING *`,
-      [add_name, add_disc, add_cat, add_img, add_owner, add_prise, add_location, add_count, id]
-    );
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Add not found' });
-    } else {
-      res.json(result.rows[0]);
-    }
+    const updatedAdd = await addService.updateAdd(Number(req.params.id), req.body);
+    if (!updatedAdd) res.status(404).json({ error: 'Ad not found' });
+    else res.json(updatedAdd);
   } catch (error) {
-    console.error('Error updating add:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
 
 /**
- * DELETE /api/adds/:id
- * Deletes an ad by ID.
+ * @route DELETE /api/adds/:id
+ * @desc Delete an ad by ID
  */
 export const deleteAdd = async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
   try {
-    const result = await pool.query('DELETE FROM adds WHERE add_id = $1 RETURNING *', [id]);
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Add not found' });
-    } else {
-      res.json({ message: 'Add deleted successfully' });
-    }
+    const deleted = await addService.deleteAdd(Number(req.params.id));
+    if (!deleted) res.status(404).json({ error: 'Ad not found' });
+    else res.json({ message: 'Ad deleted successfully' });
   } catch (error) {
-    console.error('Error deleting add:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
