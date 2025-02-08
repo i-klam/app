@@ -19,7 +19,7 @@ app.use('/api/chats', chatRoutes);
 
 AppDataSource.initialize()
   .then(() => {
-    console.log('Connected to PostgreSQL via TypeORM');
+    console.log('Connected to PostgreSQL via TypeORM ');
     app.listen(port, () => {
       console.log(`Server is running on port ${port}`);
     });
